@@ -108,7 +108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <p class="hidden">Escribime!</p>
                 <p class="text-lg text-gray-700 w-full sm:w-80 pb-5 text-lime-900">Escribime, <span class="font-bold">estoy disponible para trabajar!</span></p>
 
-                              <form action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-4 w-full max-w-lg mx-auto p-8 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 outline-2 outline-offset-2 outline-dashed outline-lime-700">
+                              <form id="contactForm" class="flex flex-col gap-4 w-full max-w-lg mx-auto p-8 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 outline-2 outline-offset-2 outline-dashed outline-lime-700">
   
   <input type="hidden" name="access_key" value="28a580e8-9dd5-4114-8a49-e1db9866a752">
 
@@ -146,11 +146,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Enviar
   </button>
 
-  
+</form>
+  <p id="result" class="text-lime-700 mt-4"></p>
   </div>
   
 
-</form>
+
             </div>
         </section>
 
@@ -163,6 +164,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </section>
 -->
     </main>
+
+    <script>
+        const form = document.getElementById("contactForm");
+const result = document.getElementById("result");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  result.innerHTML = "Enviando...";
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+
+    if (data.success) {
+      result.innerHTML = "Mensaje enviado correctamente";
+      form.reset();
+    } else {
+      result.innerHTML = "Error al enviar el mensaje";
+    }
+
+  })
+  .catch(error => {
+    result.innerHTML = "Error de conexión";
+    result.style.color = "red";
+  });
+});
+    </script>
 
 </body>
 </html>
